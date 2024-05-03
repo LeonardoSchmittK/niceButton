@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        width: 100%;
+        height: 80vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        width: 180px;
+        height: 50px;
+        background: #171616;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+        letter-spacing: 0.1em;
+        font-weight: 600;
+        text-transform: uppercase;
+        box-shadow: -10px -10px 30px rgba(128, 128, 128, 0.423);
+        cursor: pointer;
+        transition: 100ms linear;
+        border: 0;
+        border-radius: 0.4em;
+      }
+
+      .container:hover {
+        transform: scale(1.01);
+        transition: 100ms linear;
+      }
+
+      .animateBlock {
+        width: 3px;
+        height: 40px;
+        background-color: rgba(134, 136, 141, 0.248);
+        position: absolute;
+      }
+
+      .wave {
+        width: 100px;
+        height: 60px;
+        transform: skewX(60deg);
+        background: rgb(41, 31, 31);
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -99;
+      }
+
+      @keyframes wave1 {
+        from {
+          left: -400px;
+        }
+        to {
+          left: 600px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button
+      class="container"
+      onmouseenter="printWave()"
+      onmouseleave="printWaveBack()"
+    >
+      Adquira já
+      <div class="animateBlock"></div>
+    </button>
+
+    <script>
+      const animateBlock = document.querySelector(".animateBlock");
+      let counterLeft = 180;
+      let counterBottom = 50;
+      let counterRight = 0;
+      let counterTop = 0;
+      let counter = 0;
+      let animationsCounter = [
+        counterTop,
+        counterRight,
+        counterBottom,
+        counterLeft,
+      ];
+      let rightNow = animationsCounter[counter];
+
+      function animate() {
+        if (counter == 0 || counter == 1) {
+          if (rightNow < 180) {
+            rightNow += 10;
+            if (counter == 0) {
+              animateBlock.style.top = rightNow + "px";
+            }
+            if (counter == 1) {
+              animateBlock.style.left = rightNow + "px";
+            }
+            if (counter == 2) {
+              animateBlock.style.bottom = rightNow + "px";
+            }
+            if (counter == 3) {
+              animateBlock.style.right = rightNow + "px";
+            }
+          }
+
+          if (rightNow >= 180) {
+            counter++;
+            rightNow = animationsCounter[counter];
+            if (counter == animationsCounter.length) {
+              counter = 0;
+            }
+            if (counter == 1 || counter == 3) {
+              animateBlock.style.width = "40px";
+              animateBlock.style.height = "6px";
+            } else {
+              animateBlock.style.width = "6px";
+              animateBlock.style.height = "40px";
+            }
+          }
+        } else {
+          if (rightNow > 1) {
+            console.log(rightNow);
+            rightNow -= 10;
+            if (counter == 0) {
+              animateBlock.style.top = rightNow + "px";
+            }
+            if (counter == 1) {
+              animateBlock.style.left = rightNow + "px";
+            }
+            if (counter == 2) {
+              animateBlock.style.top = rightNow + "px";
+            }
+            if (counter == 3) {
+              animateBlock.style.left = rightNow + "px";
+            }
+          }
+
+          if (rightNow <= 1) {
+            counter++;
+            if (counter == animationsCounter.length) {
+              counter = 0;
+            }
+            rightNow = animationsCounter[counter];
+
+            if (counter == 1 || counter == 3) {
+              animateBlock.style.width = "40px";
+              animateBlock.style.height = "6px";
+            } else {
+              animateBlock.style.width = "3px";
+              animateBlock.style.height = "40px";
+            }
+          }
+        }
+
+        requestAnimationFrame(animate);
+      }
+
+      animate();
+      let counterr = 0;
+      let counterr2 = 0;
+      function printWave() {
+        if (counterr == 0) {
+          counterr++;
+          if (document.querySelector("div.wave")) {
+            document.querySelector("div.wave").style.animation = "";
+          }
+
+          const wave = document.createElement("div");
+          wave.style.animation =
+            "wave1 1000ms linear forwards alternate infinite";
+          wave.classList.add("wave");
+          document.querySelector(".container").appendChild(wave);
+        }
+      }
+    </script>
+  </body>
+</html>
